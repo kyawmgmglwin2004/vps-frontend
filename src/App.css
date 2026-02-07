@@ -41,7 +41,7 @@
   color: #888;
 }
 
-.container { padding: 20px; font-family: sans-serif; max-width: 900px; margin: 0 auto; }
+.container {  font-family: sans-serif; max-width: 90vw; margin: 0 auto; }
 .form-card { background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
 .form-card input, .form-card select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
 .form-card button { padding: 8px 15px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; }

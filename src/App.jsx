@@ -11,8 +11,8 @@ function App() {
     deviceType: '',
     started_date: '',
     userName: '',
-    source: '', // Dropdown အဖြစ် သုံးမယ်
-    paymentType: '', // Dropdown အဖြစ် သုံးမယ်
+    source: '', 
+    paymentType: '', 
     planType: ''
   };
 
@@ -70,18 +70,17 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title" style={{ color: 'black' }}>VPN Admin Tool</h1>
-      
       {/* Form Section */}
-      <form onSubmit={handleSubmit} className="form-card">
         <h2 className='action'>{editId ? 'Edit User' : 'Add New User'}</h2>
+
+      <form onSubmit={handleSubmit} className="form-card">
         
-        <input name="key_id" placeholder="Key ID" value={formData.key_id} onChange={handleChange} required />
+        <input style={{ width: '12%' }} name="key_id" placeholder="Key ID" value={formData.key_id} onChange={handleChange} required />
         <input name="userName" placeholder="Username" value={formData.userName} onChange={handleChange} required />
         
         {/* --- Source Dropdown --- */}
         <select name="source" value={formData.source} onChange={handleChange} required>
-          <option value="">Select Source</option>
+          <option value="">Source</option>
           <option value="Facebook">Facebook</option>
           <option value="Tiktok">Tiktok</option>
           <option value="Telegram">Telegram</option>
@@ -89,7 +88,7 @@ function App() {
 
         {/* --- Payment Type Dropdown --- */}
         <select name="paymentType" value={formData.paymentType} onChange={handleChange} required>
-          <option value="">Select Payment</option>
+          <option value="">Payment</option>
           <option value="Kpay">Kpay</option>
           <option value="Wave">Wave</option>
           <option value="AYA">AYA</option>
@@ -98,14 +97,14 @@ function App() {
         <input type="date" name="started_date" value={formData.started_date} onChange={handleChange} required />
         
         <select name="planType" value={formData.planType} onChange={handleChange} required>
-          <option value="">Select Plan</option>
+          <option value="">Plan</option>
           <option value="1 Month">1 Month</option>
           <option value="3 Months">3 Months</option>
           <option value="1 Year">1 Year</option>
         </select>
         
         <select name="deviceType" value={formData.deviceType} onChange={handleChange} required>
-          <option value="">Select Device Type</option>
+          <option value="">Device Type</option>
           <option value="phone">Phone</option>
           <option value="Laptop">Laptop</option>
         </select>
