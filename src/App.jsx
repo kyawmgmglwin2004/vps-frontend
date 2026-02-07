@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get('http://150.95.85.40:5001/users');
+    const res = await axios.get('https://api.vpn.kyawmgmglwin.site/users');
     setUsers(res.data);
   };
 
@@ -32,10 +32,10 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`http://150.95.85.40:5001/users/${editId}`, formData);
+      await axios.put(`https://api.vpn.kyawmgmglwin.site/users/${editId}`, formData);
       setEditId(null);
     } else {
-      await axios.post('http://150.95.85.40:5001/users', formData);
+      await axios.post('https://api.vpn.kyawmgmglwin.site/users', formData);
     }
     setFormData({ userName: '', source: '', paymentType: '', date: '', planType: '' });
     fetchUsers();
@@ -50,7 +50,7 @@ function App() {
   // Delete User
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete?')) {
-      await axios.delete(`http://150.95.85.40:5001/users/${id}`);
+      await axios.delete(`https://api.vpn.kyawmgmglwin.site/users/${id}`);
       fetchUsers();
     }
   };
