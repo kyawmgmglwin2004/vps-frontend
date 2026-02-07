@@ -5,6 +5,9 @@ import './App.css'; // Simple styling
 function App() {
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
+    key_id: '',
+    deviceType: '',
+    started_date: '',
     userName: '',
     source: '',
     paymentType: '',
