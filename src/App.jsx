@@ -1,88 +1,129 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css'; // Simple styling
+import './App.css';
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [formData, setFormData] = useState({
+  const [editId, setEditId] = useState(null);
+
+  const initialForm = {
     key_id: '',
     deviceType: '',
     started_date: '',
     userName: '',
-    source: '',
-    paymentType: '',
-    date: '',
+    source: '', // Dropdown အဖြစ် သုံးမယ်
+    paymentType: '', // Dropdown အဖြစ် သုံးမယ်
     planType: ''
-  });
-  const [editId, setEditId] = useState(null);
+  };
 
-  // Fetch Users
+  const [formData, setFormData] = useState(initialForm);
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get('https://api.vpn.kyawmgmglwin.site/users');
-    setUsers(res.data);
+    try {
+      const res = await axios.get('https://api.vpn.kyawmgmglwin.site/users');
+      setUsers(res.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
-  // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Create or Update User
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editId) {
-      await axios.put(`https://api.vpn.kyawmgmglwin.site/users/${editId}`, formData);
+    try {
+      if (editId) {
+        await axios.put(`https://api.vpn.kyawmgmglwin.site/users/${editId}`, formData);
+      } else {
+        await axios.post('https://api.vpn.kyawmgmglwin.site/users', formData);
+      }
+      
+      setFormData(initialForm);
       setEditId(null);
-    } else {
-      await axios.post('https://api.vpn.kyawmgmglwin.site/users', formData);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
-    setFormData({ userName: '', source: '', paymentType: '', date: '', planType: '' });
-    fetchUsers();
   };
 
-  // Edit User (Fill form with data)
   const handleEdit = (user) => {
     setFormData(user);
     setEditId(user.id);
   };
 
-  // Delete User
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete?')) {
-      await axios.delete(`https://api.vpn.kyawmgmglwin.site/users/${id}`);
-      fetchUsers();
+      try {
+        await axios.delete(`https://api.vpn.kyawmgmglwin.site/users/${id}`);
+        fetchUsers();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     }
   };
 
   return (
     <div className="container">
-      <h1 className="title" color='black'>VPN Admin Tool</h1>
+      <h1 className="title" style={{ color: 'black' }}>VPN Admin Tool</h1>
       
       {/* Form Section */}
       <form onSubmit={handleSubmit} className="form-card">
         <h2 className='action'>{editId ? 'Edit User' : 'Add New User'}</h2>
+        
         <input name="key_id" placeholder="Key ID" value={formData.key_id} onChange={handleChange} required />
         <input name="userName" placeholder="Username" value={formData.userName} onChange={handleChange} required />
-        <input name="source" placeholder="Source (e.g. Facebook)" value={formData.source} onChange={handleChange} />
-        <input name="paymentType" placeholder="Payment Type (e.g. Kpay)" value={formData.paymentType} onChange={handleChange} />
+        
+        {/* --- Source Dropdown --- */}
+        <select name="source" value={formData.source} onChange={handleChange} required>
+          <option value="">Select Source</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Tiktok">Tiktok</option>
+          <option value="Telegram">Telegram</option>
+        </select>
+
+        {/* --- Payment Type Dropdown --- */}
+        <select name="paymentType" value={formData.paymentType} onChange={handleChange} required>
+          <option value="">Select Payment</option>
+          <option value="Kpay">Kpay</option>
+          <option value="Wave">Wave</option>
+          <option value="AYA">AYA</option>
+        </select>
+
         <input type="date" name="started_date" value={formData.started_date} onChange={handleChange} required />
+        
         <select name="planType" value={formData.planType} onChange={handleChange} required>
           <option value="">Select Plan</option>
           <option value="1 Month">1 Month</option>
           <option value="3 Months">3 Months</option>
           <option value="1 Year">1 Year</option>
         </select>
+        
         <select name="deviceType" value={formData.deviceType} onChange={handleChange} required>
           <option value="">Select Device Type</option>
           <option value="phone">Phone</option>
           <option value="Laptop">Laptop</option>
         </select>
+        
         <button type="submit">{editId ? 'Update' : 'Add'}</button>
-        {editId && <button type="button" onClick={() => { setEditId(null); setFormData({userName:'', source:'', paymentType:'', date:'', planType:''}); }}>Cancel</button>}
+        
+        {editId && (
+          <button 
+            type="button" 
+            onClick={() => { 
+              setEditId(null); 
+              setFormData(initialForm); 
+            }}
+            style={{ marginLeft: '10px', backgroundColor: '#6c757d', color: 'white', border: 'none', padding: '8px 15px', cursor: 'pointer', borderRadius: '4px' }}
+          >
+            Cancel
+          </button>
+        )}
       </form>
 
       {/* Table Section */}
