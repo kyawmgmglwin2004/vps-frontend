@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get('http://localhost:5000/users');
+    const res = await axios.get('http://localhost:5001/users');
     setUsers(res.data);
   };
 
@@ -32,10 +32,10 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`http://localhost:5000/users/${editId}`, formData);
+      await axios.put(`http://localhost:5001/users/${editId}`, formData);
       setEditId(null);
     } else {
-      await axios.post('http://localhost:5000/users', formData);
+      await axios.post('http://localhost:5001/users', formData);
     }
     setFormData({ userName: '', source: '', paymentType: '', date: '', planType: '' });
     fetchUsers();
@@ -50,7 +50,7 @@ function App() {
   // Delete User
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete?')) {
-      await axios.delete(`http://localhost:5000/users/${id}`);
+      await axios.delete(`http://localhost:5001/users/${id}`);
       fetchUsers();
     }
   };
